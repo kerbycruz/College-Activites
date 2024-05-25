@@ -1,0 +1,147 @@
+package com;
+
+import javax.swing.*;
+import java.util.*;
+import java.awt.*;
+
+public class main {
+
+    static String[] ITEM_CODES = {"A", "B", "C", "D", "E"};
+    static String[] ITEM_DESCRIPTIONS = {"3-in-1 coffee", "Cup Noodles", "Laundry soap", "Bottled water - 1 Liter", "Bottled water - 500 ml"};
+    static double[] ITEM_PRICES = {10, 20, 25, 20, 12};
+    static int[] ITEM_STOCKS = {100, 36, 15, 8, 24};
+    static ArrayList<Object> addToCart = new ArrayList<>();
+
+    public static void main(String[] args) throws Exception {
+
+        JFrame frame = new JFrame();
+        JFrame buyFrame = new JFrame();
+        JFrame paymentFrame = new JFrame();
+        JFrame inventoryFrame = new JFrame();
+        JButton buyButton = new JButton("Buy");
+        JButton paymentButton = new JButton("Payment");
+        JButton inventoryButton = new JButton("Inventory");
+        JButton exitButton = new JButton("Exit");
+        JPanel panel = new JPanel();
+        JPanel buyPanel = new JPanel();
+        JButton buyAddButton = new JButton("Add");
+        JButton buyCancelButton = new JButton("Cancel");
+        JComboBox buyMenuBox = new JComboBox(ITEM_DESCRIPTIONS);
+        JTextField buyTextField = new JTextField();
+        JLabel buyQuantity = new JLabel("Quantity:");
+
+        // frame settings
+        frame.setTitle("MINI STORE");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(800, 500);
+        frame.setLayout(null);
+        frame.setLocationRelativeTo(null);
+        frame.setResizable(false);
+
+        // buyFrame settings
+        buyFrame.setTitle("SHOPPING CART");
+        buyFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        buyFrame.setVisible(false);
+        buyFrame.setSize(500, 500);
+        buyFrame.setLayout(null);
+        buyFrame.setLocationRelativeTo(null);
+        buyFrame.setResizable(false);
+        buyFrame.add(buyAddButton);
+        buyFrame.add(buyCancelButton);
+        buyFrame.add(buyMenuBox);
+        buyFrame.add(buyTextField);
+        buyFrame.add(buyQuantity);
+        buyFrame.add(buyPanel,BorderLayout.CENTER);
+
+        buyPanel.setLayout(new GridLayout(6, 4, 0, 5));
+        buyPanel.setBounds(20, 0, 700, 200);
+        buyCancelButton.setBounds(390, 400, 75, 30);
+        buyAddButton.setBounds(295, 400, 75, 30);
+        buyMenuBox.setBounds(130, 400, 150, 30);
+        buyTextField.setBounds(70, 400, 40, 30);
+        buyQuantity.setBounds(15, 400, 80, 30);
+
+        // paymentFrame settings
+        paymentFrame.setTitle("PAYMENT MENU");
+        paymentFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        paymentFrame.setVisible(false);
+        paymentFrame.setSize(500, 500);
+        paymentFrame.setLayout(null);
+        paymentFrame.setLocationRelativeTo(null);
+        paymentFrame.setResizable(false);
+
+        // inventoryFrame settings
+        inventoryFrame.setTitle("PAYMENT MENU");
+        inventoryFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        inventoryFrame.setVisible(false);
+        inventoryFrame.setSize(500, 500);
+        inventoryFrame.setLayout(null);
+        inventoryFrame.setLocationRelativeTo(null);
+        inventoryFrame.setResizable(false);
+
+        // label settings
+        panel.setLayout(new GridLayout(6, 3, 10, 10));
+        panel.setBounds(130, 50, 700, 250);
+        panel.add(new JLabel("Item Code"));
+        panel.add(new JLabel("Item Description"));
+        panel.add(new JLabel("Price"));
+        for (int i = 0; i < ITEM_CODES.length; i++) {
+            panel.add(new JLabel(ITEM_CODES[i]));
+            panel.add(new JLabel(ITEM_DESCRIPTIONS[i]));
+            panel.add(new JLabel(String.format("%.2f", ITEM_PRICES[i])));
+        }
+
+        // buyButton settings
+        buyButton.setBounds(130, 370, 100, 30);
+        buyButton.addActionListener(e -> {
+            buyFrame.setVisible(true);
+        });
+
+        // paymentButton settings
+        paymentButton.setBounds(280, 370, 100, 30);
+        paymentButton.addActionListener(e -> {
+            paymentFrame.setVisible(true);
+        });
+
+        // inventoryButton settings
+        inventoryButton.setBounds(430, 370, 100, 30);
+        inventoryButton.addActionListener(e -> {
+            inventoryFrame.setVisible(true);
+        });
+        // exit settings
+        exitButton.setBounds(580, 370, 100, 30);
+        exitButton.addActionListener(e -> {
+            int choice = JOptionPane.showConfirmDialog(paymentButton, "Leaving so soon?\nClick 'No' to stay or 'Yes' to exit.", "Confirmation Message", JOptionPane.YES_NO_OPTION);
+            if (choice == 0) {
+                System.exit(0);
+            }
+        });
+        buyAddButton.addActionListener(e -> {
+            try {
+                int quantity = Integer.parseInt(buyTextField.getText());
+                addToCart.add(buyMenuBox.getSelectedItem());
+                buyPanel.add(new JLabel("Item Code"));
+                buyPanel.add(new JLabel("Item Description"));
+                buyPanel.add(new JLabel("Price"));
+                buyPanel.add(new JLabel("Quantity"));
+                for (int i = 0; i < addToCart.size(); i++) {
+                    buyPanel.add(new JLabel(ITEM_CODES[i]));
+                    buyPanel.add(new JLabel(ITEM_DESCRIPTIONS[i]));
+                    buyPanel.add(new JLabel(String.format("%d", quantity)));
+                    buyPanel.add(new JLabel(String.format("%.2f", ITEM_PRICES[i])));
+                }
+  
+            } catch (NumberFormatException ex) {
+                System.out.println("Invalid quantity");
+            }
+        });
+
+        // add
+        frame.add(buyButton);
+        frame.add(paymentButton);
+        frame.add(inventoryButton);
+        frame.add(exitButton);
+        frame.add(panel, BorderLayout.CENTER);
+        frame.setVisible(true);
+    }
+}
